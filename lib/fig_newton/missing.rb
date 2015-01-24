@@ -1,8 +1,11 @@
+require 'fig_newton/overrides'
 require 'yaml'
 require 'socket'
 
 module FigNewton
   module Missing
+    include FigNewton::Overrides
+
     def method_missing(*args, &block)
       read_file unless @yml
       m = args.first
@@ -11,7 +14,8 @@ module FigNewton
       value = block.call(m.to_s) unless value || block.nil? || type_bool?(value)
       super unless value || type_bool?(value)
       value = FigNewton::Node.new(value) unless type_known? value
-      value
+      env = check_for_override(m, value)
+      env.nil? ? value : env
     end
 
     def read_file
