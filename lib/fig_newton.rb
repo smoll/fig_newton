@@ -2,6 +2,7 @@ require 'fig_newton/version'
 require 'fig_newton/node'
 require 'fig_newton/missing'
 require 'yml_reader'
+require 'coercible'
 
 module FigNewton
   extend YmlReader
