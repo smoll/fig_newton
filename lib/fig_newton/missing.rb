@@ -11,7 +11,7 @@ module FigNewton
       m = args.first
       value = @yml[m.to_s]
       value = args[1] unless value || type_bool?(value)
-      value = block.call(m.to_s) unless value or block.nil? || type_bool?(value)
+      value = block.call(m.to_s) unless value || block.nil? || type_bool?(value)
       super unless value || type_bool?(value)
       value = FigNewton::Node.new(value) unless type_known? value
       env = check_for_override(m, value)
@@ -32,7 +32,7 @@ module FigNewton
     private
 
     def type_known?(value)
-       value.kind_of? String or value.kind_of? Integer || type_bool?(value)
+      value.is_a?(String) || value.is_a?(Integer) || type_bool?(value)
     end
 
     def type_bool?(value)
